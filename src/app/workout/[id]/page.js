@@ -3,6 +3,7 @@ import { FaClock, FaFire, FaStar, FaPlus, FaBookmark } from "react-icons/fa";
 import Navbar from "@/components/shared/Navbar";
 import Footer from "@/components/shared/Footer";
 import WorkoutDetails from "@/components/details/WorkoutDetails";
+import { notFound } from "next/navigation";
 
 
 const WorkoutDetailsPage = async ({ params }) => {
@@ -15,11 +16,7 @@ const WorkoutDetailsPage = async ({ params }) => {
     );
 
     if (!res.ok) {
-        return (
-            <div className="text-center py-20">
-                Workout not found
-            </div>
-        );
+        notFound();
     }
 
     const workout = await res.json();
