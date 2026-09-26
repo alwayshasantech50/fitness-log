@@ -1,3 +1,11 @@
 @import "tailwindcss";
+@plugin "daisyui";
 
+html {
+  scroll-behavior: smooth;
+}
 
+body {
+  background-color: #05070d;
+  color: white;
+}
