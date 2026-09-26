@@ -7,38 +7,43 @@ const PlanContext = createContext();
 export const PlanProvider = ({ children }) => {
   const [todayPlan, setTodayPlan] = useState([]);
   const [savedWorkouts, setSavedWorkouts] = useState([]);
+  const [isLoaded, setIsLoaded] = useState(false);
 
+  // Load saved workouts when the app starts
   useEffect(() => {
-    const storedPlan =
-      JSON.parse(localStorage.getItem("todayPlan")) || [];
+    try {
+      const storedPlan = JSON.parse(localStorage.getItem("todayPlan")) || [];
+      const storedSaved =
+        JSON.parse(localStorage.getItem("savedWorkouts")) || [];
 
-    const storedSaved =
-      JSON.parse(localStorage.getItem("savedWorkouts")) || [];
-
-    setTodayPlan(storedPlan);
-    setSavedWorkouts(storedSaved);
+      setTodayPlan(Array.isArray(storedPlan) ? storedPlan : []);
+      setSavedWorkouts(Array.isArray(storedSaved) ? storedSaved : []);
+    } catch (error) {
+      console.error("Could not load saved workouts:", error);
+      setTodayPlan([]);
+      setSavedWorkouts([]);
+    } finally {
+      setIsLoaded(true);
+    }
   }, []);
 
+  // Save changes only after the stored data has loaded
   useEffect(() => {
-    localStorage.setItem(
-      "todayPlan",
-      JSON.stringify(todayPlan)
-    );
-  }, [todayPlan]);
+    if (isLoaded) {
+      localStorage.setItem("todayPlan", JSON.stringify(todayPlan));
+    }
+  }, [todayPlan, isLoaded]);
 
   useEffect(() => {
-    localStorage.setItem(
-      "savedWorkouts",
-      JSON.stringify(savedWorkouts)
-    );
-  }, [savedWorkouts]);
+    if (isLoaded) {
+      localStorage.setItem("savedWorkouts", JSON.stringify(savedWorkouts));
+    }
+  }, [savedWorkouts, isLoaded]);
 
   const addToPlan = (workout) => {
-    const exists = todayPlan.find(
-      (item) => item.id === workout.id
-    );
+    const alreadyAdded = todayPlan.some((item) => item.id === workout.id);
 
-    if (exists) {
+    if (alreadyAdded) {
       return false;
     }
 
@@ -46,32 +51,32 @@ export const PlanProvider = ({ children }) => {
       return "limit";
     }
 
-    setTodayPlan([...todayPlan, workout]);
+    setTodayPlan((currentPlan) => [...currentPlan, workout]);
     return true;
   };
 
   const addToSaved = (workout) => {
-    const exists = savedWorkouts.find(
+    const alreadySaved = savedWorkouts.some(
       (item) => item.id === workout.id
     );
 
-    if (exists) {
+    if (alreadySaved) {
       return false;
     }
 
-    setSavedWorkouts([...savedWorkouts, workout]);
+    setSavedWorkouts((currentSaved) => [...currentSaved, workout]);
     return true;
   };
 
   const removeFromPlan = (id) => {
-    setTodayPlan(
-      todayPlan.filter((item) => item.id !== id)
+    setTodayPlan((currentPlan) =>
+      currentPlan.filter((item) => item.id !== id)
     );
   };
 
   const removeFromSaved = (id) => {
-    setSavedWorkouts(
-      savedWorkouts.filter((item) => item.id !== id)
+    setSavedWorkouts((currentSaved) =>
+      currentSaved.filter((item) => item.id !== id)
     );
   };
 
@@ -80,6 +85,7 @@ export const PlanProvider = ({ children }) => {
       value={{
         todayPlan,
         savedWorkouts,
+        isLoaded,
         addToPlan,
         addToSaved,
         removeFromPlan,
