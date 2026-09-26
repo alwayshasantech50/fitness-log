@@ -1,16 +1,26 @@
 import Image from "next/image";
-import {FaClock,FaFire,FaStar,FaPlus,FaBookmark} from "react-icons/fa";
+import { FaClock, FaFire, FaStar, FaPlus, FaBookmark } from "react-icons/fa";
 import Navbar from "@/components/shared/Navbar";
 import Footer from "@/components/shared/Footer";
+import WorkoutDetails from "@/components/details/WorkoutDetails";
 
 
 const WorkoutDetailsPage = async ({ params }) => {
     const { id } = await params;
-    const res = await fetch(`https://api.abcz.workers.dev/api/fitlog/${id}`,
+
+    const res = await fetch(`https://api.api-store.workers.dev/api/fitlog/${id}`,
         {
             cache: "no-store",
         }
     );
+
+    if (!res.ok) {
+        return (
+            <div className="text-center py-20">
+                Workout not found
+            </div>
+        );
+    }
 
     const workout = await res.json();
 
@@ -20,8 +30,8 @@ const WorkoutDetailsPage = async ({ params }) => {
             <section className="max-w-7xl mx-auto px-4 py-10">
                 <div className="grid lg:grid-cols-2 gap-10">
 
-                    
-                    
+
+
                     <div className="bg-[#0b1220] border border-[#1b2130] rounded-3xl overflow-hidden">
                         <div className="relative h-[800px]">
                             <Image
@@ -33,8 +43,8 @@ const WorkoutDetailsPage = async ({ params }) => {
                         </div>
                     </div>
 
-                    
-                    
+
+
 
                     <div>
 
@@ -46,8 +56,8 @@ const WorkoutDetailsPage = async ({ params }) => {
                             {workout.description}
                         </p>
 
-                        
-                        
+
+
                         <div className="flex flex-wrap gap-2 mb-8">
                             {workout.muscleGroups.map((group) => (
                                 <span
@@ -60,8 +70,8 @@ const WorkoutDetailsPage = async ({ params }) => {
                         </div>
 
 
-                        
-                        
+
+
                         <div className="bg-[#0b1220] border border-[#1b2130] rounded-3xl p-5 mb-8">
 
                             <h2 className="font-bold text-xl mb-4">
@@ -69,7 +79,7 @@ const WorkoutDetailsPage = async ({ params }) => {
                             </h2>
 
 
-                           <div className="space-y-4 text-sm">
+                            <div className="space-y-4 text-sm">
 
                                 <div className="flex justify-between">
                                     <span>Equipment</span>
@@ -113,7 +123,7 @@ const WorkoutDetailsPage = async ({ params }) => {
 
 
 
-                        
+
                         <div className="flex gap-6 mb-8 text-gray-300">
 
                             <div className="flex items-center gap-2">
@@ -133,9 +143,9 @@ const WorkoutDetailsPage = async ({ params }) => {
 
                         </div>
 
-                        
-                        
-                        
+
+
+
 
 
                         <div className="bg-[#0b1220] border border-[#1b2130] rounded-3xl p-5 mb-8">
@@ -164,20 +174,9 @@ const WorkoutDetailsPage = async ({ params }) => {
                         </div>
 
 
-                        {/* Buttons */}
-                        <div className="flex flex-wrap gap-4">
 
-                            <button className="btn bg-lime-400 hover:bg-lime-300 text-black border-none rounded-full">
-                                <FaPlus />
-                                Add To Today's Plan
-                            </button>
+                        <WorkoutDetails workout={workout} />
 
-                            <button className="btn btn-outline rounded-full">
-                                <FaBookmark />
-                                Save For Later
-                            </button>
-
-                        </div>
 
                     </div>
 

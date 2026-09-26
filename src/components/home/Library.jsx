@@ -11,9 +11,7 @@ const Library = () => {
   useEffect(() => {
     const fetchWorkouts = async () => {
       try {
-        const res = await fetch(
-          "https://api.abcz.workers.dev/api/fitlog"
-        );
+        const res = await fetch("https://api.api-store.workers.dev/api/fitlog");
 
         const data = await res.json();
 
@@ -29,10 +27,7 @@ const Library = () => {
   }, []);
 
   return (
-    <section
-      id="library"
-      className="max-w-7xl mx-auto px-4 py-16"
-    >
+    <section id="library" className="max-w-7xl mx-auto px-4 py-16">
       {/* Heading */}
 
       <div className="text-center mb-12">
@@ -54,10 +49,7 @@ const Library = () => {
       {!loading && (
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {workouts.map((workout) => (
-            <WorkoutCard
-              key={workout.id}
-              workout={workout}
-            />
+            <WorkoutCard key={workout.id} workout={workout} />
           ))}
         </div>
       )}

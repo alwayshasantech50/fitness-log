@@ -1,11 +1,16 @@
 "use client";
 
+
+import { usePlan } from "@/context/PlanContext";
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
 
+
+
 const Navbar = () => {
   const pathname = usePathname();
+   const { todayPlan, savedWorkouts } = usePlan();
 
   return (
     <header className="border-b border-[#1b2130]">
@@ -62,7 +67,7 @@ const Navbar = () => {
             <span className="text-gray-400">Plan</span>
 
             <span className="bg-lime-400 text-black rounded-full w-6 h-6 flex items-center justify-center text-xs font-bold">
-              0
+              {todayPlan.length}
             </span>
           </Link>
 
@@ -70,7 +75,7 @@ const Navbar = () => {
             <span className="text-gray-400">Saved</span>
 
             <span className="border border-gray-700 rounded-full w-6 h-6 flex items-center justify-center text-xs">
-              0
+              {savedWorkouts.length}
             </span>
           </Link>
         </div>
