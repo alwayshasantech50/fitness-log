@@ -12,7 +12,9 @@ const Navbar = () => {
       <nav className="max-w-7xl mx-auto h-20 px-4 flex items-center justify-between">
         <Link href="/" className="flex items-center gap-3">
 
-         {/* logo */}
+        
+
+
           <Image
             src="/images/logo.png"
             alt="FitLog Logo"
@@ -24,7 +26,9 @@ const Navbar = () => {
           <span className="text-2xl font-bold tracking-wider">FITLOG</span>
         </Link>
 
-        {/* Navigation */}
+        
+
+
         <div className="hidden md:flex items-center gap-3">
           <Link
             href="/"
@@ -49,7 +53,10 @@ const Navbar = () => {
           </Link>
         </div>
 
-        {/* Counters */}
+        
+        
+
+        
         <div className="flex items-center gap-5">
           <Link href="/my-plan" className="flex items-center gap-2 text-sm">
             <span className="text-gray-400">Plan</span>
