@@ -2,10 +2,15 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { FaCheck, FaClock, FaFire, FaStar, FaTimes } from "react-icons/fa";
+import {FaCheck,FaClock,FaFire,FaStar,FaTimes} from "react-icons/fa";
 import { toast } from "react-toastify";
 
 const PlanCard = ({ workout, removeItem, showDoneButton = false }) => {
+  const handleDone = () => {
+    removeItem(workout.id);
+    toast.success(`${workout.name} marked as done!`);
+  };
+
   const handleRemove = () => {
     removeItem(workout.id);
     toast.info("Workout removed");
@@ -30,13 +35,18 @@ const PlanCard = ({ workout, removeItem, showDoneButton = false }) => {
 
           <div className="mt-2 flex flex-wrap gap-x-4 gap-y-1 text-xs text-gray-300">
             <span className="flex items-center gap-1">
-              <FaClock className="text-lime-400" /> {workout.duration} min
+              <FaClock className="text-lime-400" />
+              {workout.duration} min
             </span>
+
             <span className="flex items-center gap-1">
-              <FaFire className="text-lime-400" /> {workout.caloriesBurned} kcal
+              <FaFire className="text-lime-400" />
+              {workout.caloriesBurned} kcal
             </span>
+
             <span className="flex items-center gap-1">
-              <FaStar className="text-lime-400" /> {workout.rating}
+              <FaStar className="text-lime-400" />
+              {workout.rating}
             </span>
           </div>
         </div>
@@ -52,10 +62,11 @@ const PlanCard = ({ workout, removeItem, showDoneButton = false }) => {
           {showDoneButton && (
             <button
               type="button"
-              onClick={() => toast.success("Workout marked as done!")}
+              onClick={handleDone}
               className="flex items-center gap-2 rounded-full bg-lime-400 px-4 py-2 text-xs font-semibold text-black hover:bg-lime-300"
             >
-              <FaCheck /> Mark as Done
+              <FaCheck />
+              Mark as Done
             </button>
           )}
 
