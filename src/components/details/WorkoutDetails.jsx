@@ -41,7 +41,7 @@ const WorkoutDetails = ({ workout }) => {
 
       <button
         onClick={handleSaved}
-        className="btn btn-outline rounded-full"
+        className="btn rounded-full border border-gray-500 bg-transparent text-white hover:border-lime-400 hover:bg-[#1b2130] hover:text-white"
       >
         <FaBookmark />
         Save For Later
